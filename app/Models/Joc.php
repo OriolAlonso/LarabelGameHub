@@ -10,21 +10,11 @@ class Joc extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titol', 'datallancament', 'descripcio'];
+    protected $fillable = ['titol', 'descripcio', 'datallancament'];
 
-    /**
-     * The users that belong to the Joc.
-     */
-    public function users(): BelongsToMany
+    public function usuaris(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'usuaris_jocs');
     }
-
-    /**
-     * The plataformas that belong to the Joc.
-     */
-    public function plataformas(): BelongsToMany
-    {
-        return $this->belongsToMany(Plataforma::class);
-    }
+    
 }

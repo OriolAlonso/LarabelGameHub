@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('usuaris_jocs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuari_id')->constrained('users')->onDelete('cascade'); // Clave foránea a la tabla 'users'
-            $table->foreignId('joc_id')->constrained('jocs')->onDelete('cascade'); // Clave foránea a la tabla 'jocs'
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('joc_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('joc_id')->references('id')->on('jocs')->onDelete('cascade');
             $table->timestamps();
-            $table->unique(['usuari_id', 'joc_id']); // Evita duplicados de la misma relación usuario-juego
+            
         });
     }
 

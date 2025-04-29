@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('jocs', function (Blueprint $table) {
             $table->id();
-            $table->string('titol'); // Título del juego
-            $table->date('datallancament')->nullable(); // Fecha de lanzamiento, puede ser nula inicialmente
-            $table->text('descripcio')->nullable(); // Descripción del juego, puede ser nula
+            $table->string('titol');
+            $table->date('datallancament')->nullable();
+            $table->text('descripcio')->nullable();
             $table->timestamps();
         });
     }

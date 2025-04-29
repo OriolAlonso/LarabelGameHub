@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,8 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'plataforma_id',
-        'is_admin',
+        'plataforma_id', // Asegúrate de incluir esto
     ];
 
     /**
@@ -42,22 +45,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_admin' => 'boolean',
+        
     ];
 
-    /**
-     * Get the platform that belongs to the user.
-     */
-    public function plataforma()
+    public function plataforma(): BelongsTo
     {
-        return $this->belongsTo(Plataforma::class);
+        return $this->belongsTo(Plataforma::class, 'plataforma_id');
     }
 
-    /**
-     * The juegos that belong to the User.
-     */
-    public function juegos()
+    public function jocs(): BelongsToMany
     {
-        return $this->belongsToMany(Joc::class, 'usuaris_jocs', 'usuari_id', 'joc_id');
+        return $this->belongsToMany(Joc::class, 'usuaris_jocs');
     }
 }

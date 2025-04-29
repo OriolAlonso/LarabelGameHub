@@ -7,59 +7,50 @@ use Illuminate\Http\Request;
 
 class PlataformaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $plataformas = Plataforma::all();
+        return view('plataformas.index', compact('plataformas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        //
+        return view('plataformas.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $request->validate(['nom' => 'required']);
+        Plataforma::create($request->all());
+        return redirect()->route('plataformas.index')->with('success', 'Plataforma creada correctament.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Plataforma $plataforma)
+     public function show(Plataforma $plataforma)
     {
-        //
+        return view('plataformas.show', compact('plataforma'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Plataforma $plataforma)
     {
-        //
+        return view('plataformas.edit', compact('plataforma'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Plataforma $plataforma)
     {
-        //
+        $request->validate(['nom' => 'required']);
+        $plataforma->update($request->all());
+        return redirect()->route('plataformas.index')->with('success', 'Plataforma actualitzada correctament.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Plataforma $plataforma)
     {
-        //
+        $plataforma->delete();
+        return redirect()->route('plataformas.index')->with('success', 'Plataforma eliminada correctament.');
     }
 }

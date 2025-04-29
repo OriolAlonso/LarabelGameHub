@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->foreignId('plataforma_id')->nullable()->constrained('plataformes')->onDelete('cascade');
+            $table->foreignId('plataforma_id')->nullable()->constrained('plataformas')->onDelete('SET NULL');
             $table->boolean('is_admin')->default(false);
             $table->timestamps();
         });

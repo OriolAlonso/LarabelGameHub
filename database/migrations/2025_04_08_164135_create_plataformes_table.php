@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plataformes', function (Blueprint $table) {
-            $table->id(); // Crea una columna 'id' como clave primaria autoincremental
-            $table->string('nom')->unique(); // Columna 'nom' para el nombre de la plataforma, debe ser único
-            $table->timestamps(); // Crea las columnas 'created_at' y 'updated_at' para el seguimiento de tiempo
+        Schema::create('plataformas', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom');
+            $table->timestamps();
         });
     }
 
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plataformes');
+        Schema::dropIfExists('plataformas');
     }
 };
