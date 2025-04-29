@@ -4,11 +4,14 @@
 @section('content')
 <div class="row" class="container">
     <div class="col-12">
-        <div>
+        <div>       
             <h2>Llista de Jocs</h2>
         </div>
         <div>
+            @can('admin')
+
             <a href="{{ route('jocs.create') }}" class="btn btn-primary">Crear Joc</a>
+            @endcan
         </div>
     </div>
     @if (session('success'))
@@ -34,16 +37,16 @@
                     <td class="text-dark">{{ $joc->descripcio }}</td>
                     <td class="text-dark">{{ $joc->datallancament }}</td>
                     <td>
-                        {{-- Aquí irían las plataformas del juego --}}
+                        
                     </td>
                     <td>
                         <a href="{{ route('jocs.show', $joc->id) }}" class="btn btn-info">Veure</a>
-                        <a href="{{ route('jocs.edit', $joc->id) }}" class="btn btn-warning ms-2">Editar</a>
+                        @can('admin')<a href="{{ route('jocs.edit', $joc->id) }}" class="btn btn-warning ms-2">Editar</a>
                         <form action="{{ route('jocs.destroy', $joc->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger ms-2" onclick="return confirm('Estàs segur?')">Eliminar</button>
-                        </form>
+                        </form>@endcan
                     </td>
                 </tr>
                 @endforeach

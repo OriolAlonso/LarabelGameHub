@@ -17,6 +17,9 @@ class PlataformaController extends Controller
 
     public function create()
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para crear una plataforma.');
+        }
         return view('plataformas.create');
     }
 
@@ -35,13 +38,19 @@ class PlataformaController extends Controller
 
 
     public function edit(Plataforma $plataforma)
-    {
+    {   
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para editar esta plataforma.');
+        }
         return view('plataformas.edit', compact('plataforma'));
     }
 
 
     public function update(Request $request, Plataforma $plataforma)
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para editar esta plataforma.');
+        }
         $request->validate(['nom' => 'required']);
         $plataforma->update($request->all());
         return redirect()->route('plataformas.index')->with('success', 'Plataforma actualitzada correctament.');
@@ -50,6 +59,9 @@ class PlataformaController extends Controller
 
     public function destroy(Plataforma $plataforma)
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para eliminar esta plataforma.');
+        }
         $plataforma->delete();
         return redirect()->route('plataformas.index')->with('success', 'Plataforma eliminada correctament.');
     }

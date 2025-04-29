@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <h1>Llista d'Usuaris</h1>
-    <a href="{{ route('usuaris.create') }}" class="btn btn-primary mb-3">Crear Usuari</a>
+    @can('admin')<a href="{{ route('usuaris.create') }}" class="btn btn-primary mb-3">Crear Usuari</a> @endcan
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -24,13 +24,13 @@
                 <td>{{ $usuari->email }}</td>
                  <td>{{ $usuari->plataforma->nom ?? 'N/A' }}</td>
                 <td>
-                    <a href="{{ route('usuaris.show', $usuari->id) }}" class="btn btn-info btn-sm">Veure</a>
+                    <a href="{{ route('usuaris.show', $usuari->id) }}" class="btn btn-info btn-sm">Veure</a>@can('admin')
                     <a href="{{ route('usuaris.edit', $usuari->id) }}" class="btn btn-primary btn-sm">Editar</a>
                     <form action="{{ route('usuaris.destroy', $usuari->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Estàs segur?')">Eliminar</button>
-                    </form>
+                    </form> @endcan
                 </td>
             </tr>
             @endforeach

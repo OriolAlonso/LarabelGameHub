@@ -19,6 +19,9 @@ class JocController extends Controller
 
     public function create()
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para crear un juego.');
+        }
         $plataformas = Plataforma::all();
         return view('jocs.create', compact('plataformas'));
     }
@@ -42,21 +45,16 @@ class JocController extends Controller
 
 
     public function show(Joc $joc)
-    {
+    {   
         return view('jocs.show', compact('joc'));
     }
 
 
     public function edit(Joc $joc)
     {
-        /*if (!auth()->check()) {
-            dd('Usuario no autenticado');
-        }
-        $user = auth()->user();
-        echo "Antes de Gate::allows('edit-joc')\n"; 
-        if (! Gate::allows('edit-joc')) {
+        if (Gate::denies('admin')) {
             abort(403, 'No estás autorizado para editar este juego.');
-        }*/
+        }
         return view('jocs.edit', compact('joc'));
     }
 
@@ -64,9 +62,9 @@ class JocController extends Controller
     public function update(Request $request, Joc $joc)
     {
         
-        /*if (! Gate::allows('edit-joc')) { // Verifica la autorización
-            abort(403, 'No estás autorizado para editar este juego.'); // Lanza una excepción si no está autorizado
-        }*/
+        if (! Gate::allows('admin')) { 
+            abort(403, 'No estás autorizado para editar este juego.');
+        }
         $request->validate([
             'titol' => 'required',
             'descripcio' => 'required',
@@ -81,9 +79,9 @@ class JocController extends Controller
 
     public function destroy(Joc $joc)
     {
-        /*if (! Gate::allows('delete-joc')) { // Verifica la autorización
-            abort(403, 'No estás autorizado para eliminar este juego.'); // Lanza una excepción si no está autorizado
-        }*/
+        if (! Gate::allows('admin')) { 
+            abort(403, 'No estás autorizado para eliminar este juego.'); 
+        }
         $joc->delete();
         return redirect()->route('jocs.index')->with('success', 'Joc eliminat correctament.');
     }

@@ -19,6 +19,9 @@ class UsuariController extends Controller
 
     public function create()
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para crear un usuario.');
+        }
         $plataformas = Plataforma::all();
         return view('usuaris.create', compact('plataformas'));
     }
@@ -31,6 +34,7 @@ class UsuariController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'plataforma_id' => 'required|exists:plataformas,id',
+            
         ]);
 
         $request['password'] = Hash::make($request->password);
@@ -47,17 +51,24 @@ class UsuariController extends Controller
 
     public function edit(User $usuari)
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para editar este usuario.');
+        }
         $plataformas = Plataforma::all();
         return view('usuaris.edit', compact('usuari', 'plataformas'));
     }
 
     public function update(Request $request, User $usuari)
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para editar este usuario.');
+        }
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$usuari->id,
             'password' => 'nullable|min:8',
             'plataforma_id' => 'required|exists:plataformas,id',
+
         ]);
 
         if ($request->password) {
@@ -72,6 +83,9 @@ class UsuariController extends Controller
 
     public function destroy(User $usuari)
     {
+        if (Gate::denies('admin')) {
+            abort(403, 'No estás autorizado para eliminar este usuario.');
+        }
         $usuari->delete();
         return redirect()->route('usuaris.index')->with('success', 'Usuari eliminat correctament.');
     }
